@@ -27,6 +27,7 @@
                 <RowDefinition Height="100" />
                 <RowDefinition Height="100" />
                 <RowDefinition Height="100" />
+                <RowDefinition Height="100" />
             </Grid.RowDefinitions>
                 <Button Grid.Row="0" Grid.Column = "1" Name="Button1" Background="Maroon" Click="NewClick"></Button>
                 <Button Grid.Row="0" Grid.Column = "3" Name="Button2" Background="Maroon" Click="NewClick"></Button>
@@ -116,7 +117,12 @@
                 <Ellipse Name="BlackEllipse10" Grid.Row="2" Grid.Column="3" Width="90" Height="90" Fill="Black" IsHitTestVisible="False"></Ellipse>
                 <Ellipse Name="BlackEllipse11" Grid.Row="2" Grid.Column="5" Width="90" Height="90" Fill="Black" IsHitTestVisible="False"></Ellipse>
                 <Ellipse Name="BlackEllipse12" Grid.Row="2" Grid.Column="7" Width="90" Height="90" Fill="Black" IsHitTestVisible="False"></Ellipse>
-                
+                <TextBlock Grid.Row="4" Grid.Column="4" Name="BlackWon" TextWrapping="Wrap" Visibility="Collapsed">
+                    <Run FontSize="16">BLACK WON</Run>
+                </TextBlock>
+                <TextBlock Grid.Row="4" Grid.Column="4" Name="WhiteWon" TextWrapping="Wrap" Visibility="Collapsed">
+                    <Run FontSize="16">WHITE WON</Run>
+                </TextBlock>
             </Grid>
     </Border>
     </Grid>
