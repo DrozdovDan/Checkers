@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static Checkers.WhiteTurnClass;
+using static Checkers.BlackTurnClass;
 
 namespace Checkers
 {
@@ -20,8 +22,11 @@ namespace Checkers
     /// </summary>
     public partial class MainWindow : Window
     {
-        private List<Ellipse> whiteEllipses = new List<Ellipse>();
-        private List<Ellipse> blackEllipses = new List<Ellipse>();
+        public static List<Ellipse> whiteEllipses = new List<Ellipse>();
+        public static List<Ellipse> blackEllipses = new List<Ellipse>();
+        public static Button[,] field = new Button[8, 8];
+        public static int countOfBeatenMen = 0;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -51,45 +56,7 @@ namespace Checkers
             blackEllipses.Add(BlackEllipse10);
             blackEllipses.Add(BlackEllipse11);
             blackEllipses.Add(BlackEllipse12);
-        }
-        
-        bool isTriggered = false;
-        Button lastTriggeredButton;
-        private bool whiteTurn = false;
-        private Ellipse? manToBeat1 = null, manToBeat2 = null;
-        private void NewClick(object sender, RoutedEventArgs e)
-        {
-            var thatButton = (Button)sender;
-            Ellipse[,] whiteMans = new Ellipse[9, 9];
-            //Set empty ellipses to squares that does not have men
-            for (int i = 0; i < 8; i++)
-            {
-                for (int j = 0; j < 8; j++)
-                {
-                    whiteMans[i, j] = new Ellipse();
-                }
-            }
-            //Set an array of white men
-            foreach (var ellipse in whiteEllipses)
-            {
-                whiteMans[Grid.GetRow(ellipse), Grid.GetColumn(ellipse)] = ellipse;
-            }
-            
-            Ellipse[,] blackMans = new Ellipse[9, 9];
-            //Set empty ellipses to squares that does not have men
-            for (int i = 0; i < 8; i++)
-            {
-                for (int j = 0; j < 8; j++)
-                {
-                    blackMans[i, j] = new Ellipse();
-                }
-            }
-            //Set an array of black men
-            foreach (var ellipse in blackEllipses)
-            {
-                blackMans[Grid.GetRow(ellipse), Grid.GetColumn(ellipse)] = ellipse;
-            }
-            Button[,] field = new Button[8, 8];
+
             //Set empty buttons to white squares
             for (int i = 0; i < 8; i++)
             {
@@ -101,6 +68,7 @@ namespace Checkers
                     }
                 }
             }
+
             //Set an array of buttons
             field[0, 1] = Button1;
             field[0, 3] = Button2;
@@ -134,252 +102,32 @@ namespace Checkers
             field[7, 2] = Button30;
             field[7, 4] = Button31;
             field[7, 6] = Button32;
+        }
+
+        public static bool isTriggered = false;
+        public static Button? lastTriggeredButton;
+        public static bool whiteTurn = false;
+        public static Ellipse? manToBeat1 = null, manToBeat2 = null;
+
+        private void NewClick(object? sender, RoutedEventArgs e)
+        {
+            var thatButton = (Button)sender!;
+
             if (whiteTurn)
             {
-                if (whiteEllipses.Contains(whiteMans[Grid.GetRow(thatButton), Grid.GetColumn(thatButton)]))
-                {
-                    if (!isTriggered)
-                    {
-                        lastTriggeredButton = thatButton;
-                        //Check right-up
-                        if (Grid.GetColumn(thatButton) < 7 && Grid.GetRow(thatButton) > 0 &&
-                            !whiteEllipses.Contains(whiteMans[Grid.GetRow(thatButton) - 1, Grid.GetColumn(thatButton) + 1]) &&
-                            !blackEllipses.Contains(blackMans[Grid.GetRow(thatButton) - 1, Grid.GetColumn(thatButton) + 1]))
-                        {
-                            thatButton.Background = Brushes.Gold;
-                            isTriggered = true;
-                            field[Grid.GetRow(thatButton) - 1, Grid.GetColumn(thatButton) + 1].Background = Brushes.ForestGreen;
-                        }
-                        //Check right-up to beat
-                        if (Grid.GetColumn(thatButton) < 6 && Grid.GetRow(thatButton) > 1 &&
-                            blackEllipses.Contains(blackMans[Grid.GetRow(thatButton) - 1, Grid.GetColumn(thatButton) + 1]) &&
-                            !whiteEllipses.Contains(whiteMans[Grid.GetRow(thatButton) - 2, Grid.GetColumn(thatButton) + 2]) &&
-                            !blackEllipses.Contains(blackMans[Grid.GetRow(thatButton) - 2, Grid.GetColumn(thatButton) + 2]))
-                        {
-                            thatButton.Background = Brushes.Gold;
-                            isTriggered = true;
-                            manToBeat1 = blackMans[Grid.GetRow(thatButton) - 1, Grid.GetColumn(thatButton) + 1];
-                            field[Grid.GetRow(thatButton) - 2, Grid.GetColumn(thatButton) + 2].Background = Brushes.ForestGreen;
-                        }
-
-                        //Check left-up
-                        if (Grid.GetColumn(thatButton) > 0 && Grid.GetRow(thatButton) > 0 &&
-                            !whiteEllipses.Contains(whiteMans[Grid.GetRow(thatButton) - 1, Grid.GetColumn(thatButton) - 1]) &&
-                            !blackEllipses.Contains(blackMans[Grid.GetRow(thatButton) - 1, Grid.GetColumn(thatButton) - 1]))
-                        {
-                            thatButton.Background = Brushes.Gold;
-                            isTriggered = true;
-                            field[Grid.GetRow(thatButton) - 1, Grid.GetColumn(thatButton) - 1].Background = Brushes.ForestGreen;
-                        }
-                        //Check left-up to beat
-                        if (Grid.GetColumn(thatButton) > 1 && Grid.GetRow(thatButton) > 1 &&
-                            blackEllipses.Contains(blackMans[Grid.GetRow(thatButton) - 1, Grid.GetColumn(thatButton) - 1]) &&
-                            !whiteEllipses.Contains(whiteMans[Grid.GetRow(thatButton) - 2, Grid.GetColumn(thatButton) - 2]) &&
-                            !blackEllipses.Contains(blackMans[Grid.GetRow(thatButton) - 2, Grid.GetColumn(thatButton) - 2]))
-                        {
-                            thatButton.Background = Brushes.Gold;
-                            isTriggered = true;
-                            manToBeat2 = blackMans[Grid.GetRow(thatButton) - 1, Grid.GetColumn(thatButton) - 1];
-                            field[Grid.GetRow(thatButton) - 2, Grid.GetColumn(thatButton) - 2].Background = Brushes.ForestGreen;
-                        }
-                    }
-
-                    else
-                    {
-                        //Delete trigger
-                        if (thatButton.Background.Equals(Brushes.Gold))
-                        {
-                            isTriggered = false;
-                            thatButton.Background = Brushes.Maroon;
-                            manToBeat1 = null;
-                            manToBeat2 = null;
-                            if (Grid.GetColumn(thatButton) > 0 && Grid.GetRow(thatButton) > 0)
-                            {
-                                field[Grid.GetRow(thatButton) - 1, Grid.GetColumn(thatButton) - 1].Background = Brushes.Maroon;
-                            }
-                            if (Grid.GetColumn(thatButton) < 7 && Grid.GetRow(thatButton) > 0)
-                            {
-                                field[Grid.GetRow(thatButton) - 1, Grid.GetColumn(thatButton) + 1].Background = Brushes.Maroon;
-                            }
-                            if (Grid.GetColumn(thatButton) > 1 && Grid.GetRow(thatButton) > 1)
-                            {
-                                field[Grid.GetRow(thatButton) - 2, Grid.GetColumn(thatButton) - 2].Background = Brushes.Maroon;
-                            }
-                            if (Grid.GetColumn(thatButton) < 6 && Grid.GetRow(thatButton) > 1)
-                            {
-                                field[Grid.GetRow(thatButton) - 2, Grid.GetColumn(thatButton) + 2].Background = Brushes.Maroon;
-                            }
-                        }
-                    }
-                }
-                //Move a man
-                if (thatButton.Background.Equals(Brushes.ForestGreen)) 
-                {
-                    isTriggered = false;
-                    Grid.SetColumn(whiteMans[Grid.GetRow(lastTriggeredButton), Grid.GetColumn(lastTriggeredButton)], Grid.GetColumn(thatButton));
-                    Grid.SetRow(whiteMans[Grid.GetRow(lastTriggeredButton), Grid.GetColumn(lastTriggeredButton)], Grid.GetRow(thatButton));
-                    lastTriggeredButton.Background = Brushes.Maroon;
-                    if (Grid.GetColumn(lastTriggeredButton) > 0 && Grid.GetRow(lastTriggeredButton) > 0)
-                    {
-                        field[Grid.GetRow(lastTriggeredButton) - 1, Grid.GetColumn(lastTriggeredButton) - 1].Background = Brushes.Maroon;
-                    }
-                    if (Grid.GetColumn(lastTriggeredButton) < 7 && Grid.GetRow(lastTriggeredButton) > 0)
-                    {
-                        field[Grid.GetRow(lastTriggeredButton) - 1, Grid.GetColumn(lastTriggeredButton) + 1].Background = Brushes.Maroon;
-                    }
-                    if (Grid.GetColumn(lastTriggeredButton) > 1 && Grid.GetRow(lastTriggeredButton) > 1)
-                    {
-                        field[Grid.GetRow(lastTriggeredButton) - 2, Grid.GetColumn(lastTriggeredButton) - 2].Background = Brushes.Maroon;
-                    }
-                    if (Grid.GetColumn(lastTriggeredButton) < 6 && Grid.GetRow(lastTriggeredButton) > 1)
-                    {
-                        field[Grid.GetRow(lastTriggeredButton) - 2, Grid.GetColumn(lastTriggeredButton) + 2].Background = Brushes.Maroon;
-                    }
-                    //Beat a man
-                    if (Grid.GetColumn(thatButton) == Grid.GetColumn(lastTriggeredButton) + 2)
-                    {
-                        Grid.SetRow(manToBeat1, 8);
-                        manToBeat1.Visibility = Visibility.Collapsed;
-                        blackEllipses.Remove(manToBeat1);
-                    }
-                    
-                    if (Grid.GetColumn(thatButton) == Grid.GetColumn(lastTriggeredButton) - 2)
-                    {
-                        Grid.SetRow(manToBeat2, 8);
-                        manToBeat2.Visibility = Visibility.Collapsed;
-                        blackEllipses.Remove(manToBeat2);
-                    }
-                    whiteTurn = false;
-                    manToBeat1 = null;
-                    manToBeat2 = null;
-                }
+                WhiteTurn(thatButton);
             }
             else
             {
-                if (blackEllipses.Contains(blackMans[Grid.GetRow(thatButton), Grid.GetColumn(thatButton)]))
-                {
-                    if (!isTriggered)
-                    {
-                        lastTriggeredButton = thatButton;
-                        //Check right-up
-                        if (Grid.GetColumn(thatButton) < 7 && Grid.GetRow(thatButton) < 7 &&
-                            !whiteEllipses.Contains(whiteMans[Grid.GetRow(thatButton) + 1, Grid.GetColumn(thatButton) + 1]) &&
-                            !blackEllipses.Contains(blackMans[Grid.GetRow(thatButton) + 1, Grid.GetColumn(thatButton) + 1]))
-                        {
-                            thatButton.Background = Brushes.Gold;
-                            isTriggered = true;
-                            field[Grid.GetRow(thatButton) + 1, Grid.GetColumn(thatButton) + 1].Background = Brushes.ForestGreen;
-                        }
-                        //Check right-up to beat
-                        if (Grid.GetColumn(thatButton) < 6 && Grid.GetRow(thatButton) < 6 &&
-                            whiteEllipses.Contains(whiteMans[Grid.GetRow(thatButton) + 1, Grid.GetColumn(thatButton) + 1]) &&
-                            !whiteEllipses.Contains(whiteMans[Grid.GetRow(thatButton) + 2, Grid.GetColumn(thatButton) + 2]) &&
-                            !blackEllipses.Contains(blackMans[Grid.GetRow(thatButton) + 2, Grid.GetColumn(thatButton) + 2]))
-                        {
-                            thatButton.Background = Brushes.Gold;
-                            isTriggered = true;
-                            manToBeat1 = whiteMans[Grid.GetRow(thatButton) + 1, Grid.GetColumn(thatButton) + 1];
-                            field[Grid.GetRow(thatButton) + 2, Grid.GetColumn(thatButton) + 2].Background = Brushes.ForestGreen;
-                        }
-
-                        //Check left-up
-                        if (Grid.GetColumn(thatButton) > 0 && Grid.GetRow(thatButton) < 7 &&
-                            !whiteEllipses.Contains(whiteMans[Grid.GetRow(thatButton) + 1, Grid.GetColumn(thatButton) - 1]) &&
-                            !blackEllipses.Contains(blackMans[Grid.GetRow(thatButton) + 1, Grid.GetColumn(thatButton) - 1]))
-                        {
-                            thatButton.Background = Brushes.Gold;
-                            isTriggered = true;
-                            field[Grid.GetRow(thatButton) + 1, Grid.GetColumn(thatButton) - 1].Background = Brushes.ForestGreen;
-                        }
-                        //Check left-up to beat
-                        if (Grid.GetColumn(thatButton) > 1 && Grid.GetRow(thatButton) < 6 &&
-                            whiteEllipses.Contains(whiteMans[Grid.GetRow(thatButton) + 1, Grid.GetColumn(thatButton) - 1]) &&
-                            !whiteEllipses.Contains(whiteMans[Grid.GetRow(thatButton) + 2, Grid.GetColumn(thatButton) - 2]) &&
-                            !blackEllipses.Contains(blackMans[Grid.GetRow(thatButton) + 2, Grid.GetColumn(thatButton) - 2]))
-                        {
-                            thatButton.Background = Brushes.Gold;
-                            isTriggered = true;
-                            manToBeat2 = whiteMans[Grid.GetRow(thatButton) + 1, Grid.GetColumn(thatButton) - 1];
-                            field[Grid.GetRow(thatButton) + 2, Grid.GetColumn(thatButton) - 2].Background = Brushes.ForestGreen;
-                        }
-                    }
-
-                    else
-                    {
-                        //Delete trigger
-                        if (thatButton.Background.Equals(Brushes.Gold))
-                        {
-                            manToBeat1 = null;
-                            manToBeat2 = null;
-                            isTriggered = false;
-                            thatButton.Background = Brushes.Maroon;
-                            if (Grid.GetColumn(thatButton) > 0 && Grid.GetRow(thatButton) < 7)
-                            {
-                                field[Grid.GetRow(thatButton) + 1, Grid.GetColumn(thatButton) - 1].Background = Brushes.Maroon;
-                            }
-                            if (Grid.GetColumn(thatButton) < 7 && Grid.GetRow(thatButton) < 7)
-                            {
-                                field[Grid.GetRow(thatButton) + 1, Grid.GetColumn(thatButton) + 1].Background = Brushes.Maroon;
-                            }
-                            if (Grid.GetColumn(thatButton) > 1 && Grid.GetRow(thatButton) < 6)
-                            {
-                                field[Grid.GetRow(thatButton) + 2, Grid.GetColumn(thatButton) - 2].Background = Brushes.Maroon;
-                            }
-                            if (Grid.GetColumn(thatButton) < 6 && Grid.GetRow(thatButton) < 6)
-                            {
-                                field[Grid.GetRow(thatButton) + 2, Grid.GetColumn(thatButton) + 2].Background = Brushes.Maroon;
-                            }
-                        }
-                    }
-                }
-                //Move a man
-                if (thatButton.Background.Equals(Brushes.ForestGreen)) 
-                {
-                    isTriggered = false;
-                    Grid.SetColumn(blackMans[Grid.GetRow(lastTriggeredButton), Grid.GetColumn(lastTriggeredButton)], Grid.GetColumn(thatButton));
-                    Grid.SetRow(blackMans[Grid.GetRow(lastTriggeredButton), Grid.GetColumn(lastTriggeredButton)], Grid.GetRow(thatButton));
-                    lastTriggeredButton.Background = Brushes.Maroon;
-                    if (Grid.GetColumn(lastTriggeredButton) > 0 && Grid.GetRow(lastTriggeredButton) < 7)
-                    {
-                        field[Grid.GetRow(lastTriggeredButton) + 1, Grid.GetColumn(lastTriggeredButton) - 1].Background = Brushes.Maroon;
-                    }
-                    if (Grid.GetColumn(lastTriggeredButton) < 7 && Grid.GetRow(lastTriggeredButton) < 7)
-                    {
-                        field[Grid.GetRow(lastTriggeredButton) + 1, Grid.GetColumn(lastTriggeredButton) + 1].Background = Brushes.Maroon;
-                    }
-                    if (Grid.GetColumn(lastTriggeredButton) > 1 && Grid.GetRow(lastTriggeredButton) < 6)
-                    {
-                        field[Grid.GetRow(lastTriggeredButton) + 2, Grid.GetColumn(lastTriggeredButton) - 2].Background = Brushes.Maroon;
-                    }
-                    if (Grid.GetColumn(lastTriggeredButton) < 6 && Grid.GetRow(lastTriggeredButton) < 6)
-                    {
-                        field[Grid.GetRow(lastTriggeredButton) + 2, Grid.GetColumn(lastTriggeredButton) + 2].Background = Brushes.Maroon;
-                    }
-                    //Beat a man
-                    if (Grid.GetColumn(thatButton) == Grid.GetColumn(lastTriggeredButton) + 2)
-                    {
-                        Grid.SetRow(manToBeat1, 8);
-                        manToBeat1.Visibility = Visibility.Collapsed;
-                        whiteEllipses.Remove(manToBeat1);
-                    }
-                    
-                    if (Grid.GetColumn(thatButton) == Grid.GetColumn(lastTriggeredButton) - 2)
-                    {
-                        Grid.SetRow(manToBeat2, 8);
-                        manToBeat2.Visibility = Visibility.Collapsed;
-                        whiteEllipses.Remove(manToBeat2);
-                    }
-
-                    whiteTurn = true;
-                    manToBeat1 = null;
-                    manToBeat2 = null;
-                }
+                BlackTurn(thatButton);
             }
+
             //Who won?
             if (whiteEllipses.Count == 0)
             {
                 BlackWon.Visibility = Visibility.Visible;
             }
+
             if (blackEllipses.Count == 0)
             {
                 WhiteWon.Visibility = Visibility.Visible;
