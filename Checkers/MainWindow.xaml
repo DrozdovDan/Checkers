@@ -166,10 +166,12 @@
                 <Ellipse Name="BlackEllipse12" Grid.Row="2" Grid.Column="7" Width="90" Height="90" Fill="Black"
                          IsHitTestVisible="False">
                 </Ellipse>
-                <TextBlock Grid.Row="4" Grid.Column="4" Name="BlackWon" TextWrapping="Wrap" Visibility="Collapsed">
+                <TextBlock Grid.Row="4" Grid.Column="4" Name="BlackWon" TextWrapping="Wrap" Visibility="Collapsed"
+                           HorizontalAlignment="Stretch">
                     <Run FontSize="16">BLACK WON</Run>
                 </TextBlock>
-                <TextBlock Grid.Row="4" Grid.Column="4" Name="WhiteWon" TextWrapping="Wrap" Visibility="Collapsed">
+                <TextBlock Grid.Row="4" Grid.Column="4" Name="WhiteWon" TextWrapping="Wrap" Visibility="Collapsed"
+                           HorizontalAlignment="Stretch">
                     <Run FontSize="16">WHITE WON</Run>
                 </TextBlock>
             </Grid>

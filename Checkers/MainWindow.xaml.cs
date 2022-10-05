@@ -26,6 +26,7 @@ namespace Checkers
         public static List<Ellipse> blackEllipses = new List<Ellipse>();
         public static Button[,] field = new Button[8, 8];
         public static int countOfBeatenMen = 0;
+        public static bool canBeat = false;
 
         public MainWindow()
         {
@@ -111,14 +112,102 @@ namespace Checkers
 
         private void NewClick(object? sender, RoutedEventArgs e)
         {
+            canBeat = false;
+
             var thatButton = (Button)sender!;
+
+            Ellipse[,] whiteMans = new Ellipse[9, 9];
+            //Set empty ellipses to squares that does not have men
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    whiteMans[i, j] = new Ellipse();
+                }
+            }
+
+            //Set an array of white men
+            foreach (var ellipse in whiteEllipses)
+            {
+                whiteMans[Grid.GetRow(ellipse), Grid.GetColumn(ellipse)] = ellipse;
+            }
+
+            Ellipse[,] blackMans = new Ellipse[9, 9];
+            //Set empty ellipses to squares that does not have men
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    blackMans[i, j] = new Ellipse();
+                }
+            }
+
+            //Set an array of black men
+            foreach (var ellipse in blackEllipses)
+            {
+                blackMans[Grid.GetRow(ellipse), Grid.GetColumn(ellipse)] = ellipse;
+            }
 
             if (whiteTurn)
             {
+                foreach (var whiteEllipse in whiteEllipses)
+                {
+                    if (Grid.GetColumn(whiteEllipse) < 6 && Grid.GetRow(whiteEllipse) > 1 &&
+                        blackEllipses.Contains(blackMans[Grid.GetRow(whiteEllipse) - 1,
+                            Grid.GetColumn(whiteEllipse) + 1]) &&
+                        !whiteEllipses.Contains(whiteMans[Grid.GetRow(whiteEllipse) - 2,
+                            Grid.GetColumn(whiteEllipse) + 2]) &&
+                        !blackEllipses.Contains(blackMans[Grid.GetRow(whiteEllipse) - 2,
+                            Grid.GetColumn(whiteEllipse) + 2]))
+                    {
+                        canBeat = true;
+                        break;
+                    }
+
+                    if (Grid.GetColumn(whiteEllipse) > 1 && Grid.GetRow(whiteEllipse) > 1 &&
+                        blackEllipses.Contains(blackMans[Grid.GetRow(whiteEllipse) - 1,
+                            Grid.GetColumn(whiteEllipse) - 1]) &&
+                        !whiteEllipses.Contains(whiteMans[Grid.GetRow(whiteEllipse) - 2,
+                            Grid.GetColumn(whiteEllipse) - 2]) &&
+                        !blackEllipses.Contains(blackMans[Grid.GetRow(whiteEllipse) - 2,
+                            Grid.GetColumn(whiteEllipse) - 2]))
+                    {
+                        canBeat = true;
+                        break;
+                    }
+                }
+
                 WhiteTurn(thatButton);
             }
             else
             {
+                foreach (var blackEllipse in blackEllipses)
+                {
+                    if (Grid.GetColumn(blackEllipse) < 6 && Grid.GetRow(blackEllipse) < 6 &&
+                        whiteEllipses.Contains(whiteMans[Grid.GetRow(blackEllipse) + 1,
+                            Grid.GetColumn(blackEllipse) + 1]) &&
+                        !whiteEllipses.Contains(whiteMans[Grid.GetRow(blackEllipse) + 2,
+                            Grid.GetColumn(blackEllipse) + 2]) &&
+                        !blackEllipses.Contains(blackMans[Grid.GetRow(blackEllipse) + 2,
+                            Grid.GetColumn(blackEllipse) + 2]))
+                    {
+                        canBeat = true;
+                        break;
+                    }
+
+                    if (Grid.GetColumn(blackEllipse) > 1 && Grid.GetRow(blackEllipse) < 6 &&
+                        whiteEllipses.Contains(whiteMans[Grid.GetRow(blackEllipse) + 1,
+                            Grid.GetColumn(blackEllipse) - 1]) &&
+                        !whiteEllipses.Contains(whiteMans[Grid.GetRow(blackEllipse) + 2,
+                            Grid.GetColumn(blackEllipse) - 2]) &&
+                        !blackEllipses.Contains(blackMans[Grid.GetRow(blackEllipse) + 2,
+                            Grid.GetColumn(blackEllipse) - 2]))
+                    {
+                        canBeat = true;
+                        break;
+                    }
+                }
+
                 BlackTurn(thatButton);
             }
 

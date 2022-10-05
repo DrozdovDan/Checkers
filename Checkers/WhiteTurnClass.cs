@@ -62,7 +62,7 @@ public static class WhiteTurnClass
                     !whiteEllipses.Contains(whiteMans[Grid.GetRow(thatButton) - 1,
                         Grid.GetColumn(thatButton) + 1]) &&
                     !blackEllipses.Contains(blackMans[Grid.GetRow(thatButton) - 1,
-                        Grid.GetColumn(thatButton) + 1]) && countOfBeatenMen == 0)
+                        Grid.GetColumn(thatButton) + 1]) && countOfBeatenMen == 0 && !canBeat)
                 {
                     thatButton.Background = Brushes.Gold;
                     isTriggered = true;
@@ -91,7 +91,7 @@ public static class WhiteTurnClass
                     !whiteEllipses.Contains(whiteMans[Grid.GetRow(thatButton) - 1,
                         Grid.GetColumn(thatButton) - 1]) &&
                     !blackEllipses.Contains(blackMans[Grid.GetRow(thatButton) - 1,
-                        Grid.GetColumn(thatButton) - 1]) && countOfBeatenMen == 0)
+                        Grid.GetColumn(thatButton) - 1]) && countOfBeatenMen == 0 && !canBeat)
                 {
                     thatButton.Background = Brushes.Gold;
                     isTriggered = true;
@@ -114,7 +114,7 @@ public static class WhiteTurnClass
                     field[Grid.GetRow(thatButton) - 2, Grid.GetColumn(thatButton) - 2].Background =
                         Brushes.ForestGreen;
                 }
-                
+
                 if (!isTriggered) countOfBeatenMen = 0;
             }
 
@@ -218,6 +218,7 @@ public static class WhiteTurnClass
                         WhiteTurn(thatButton);
                     }
                 }
+
                 if (countOfBeatenMen == 0) whiteTurn = false;
                 if (countOfBeatenMen == 0) manToBeat1 = null;
                 if (countOfBeatenMen == 0) manToBeat2 = null;
