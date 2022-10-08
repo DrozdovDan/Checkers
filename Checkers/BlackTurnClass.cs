@@ -63,6 +63,8 @@ public class BlackTurnClass
             }
 
             IfCanBeatBlackKing(blackEllipse);
+            
+            IfCanMoveBlack(blackEllipse);
         }
     }
 
@@ -85,6 +87,45 @@ public class BlackTurnClass
             !blackEllipses.Contains(blackMans[Grid.GetRow(blackEllipse) - 2, Grid.GetColumn(blackEllipse) + 2]))
         {
             canBeat = true;
+        }
+    }
+
+    private static void IfCanMoveBlack(Ellipse blackEllipse)
+    {
+        if (Grid.GetColumn(blackEllipse) < maxSizeOfField - 1 && Grid.GetRow(blackEllipse) < maxSizeOfField - 1 &&
+            !whiteEllipses.Contains(whiteMans[Grid.GetRow(blackEllipse) + 1, Grid.GetColumn(blackEllipse) + 1]) &&
+            !blackEllipses.Contains(blackMans[Grid.GetRow(blackEllipse) + 1, Grid.GetColumn(blackEllipse) + 1]))
+        {
+            canMove = true;
+        }
+
+        if (Grid.GetColumn(blackEllipse) > 0 && Grid.GetRow(blackEllipse) < maxSizeOfField - 1 &&
+            !whiteEllipses.Contains(whiteMans[Grid.GetRow(blackEllipse) + 1, Grid.GetColumn(blackEllipse) - 1]) &&
+            !blackEllipses.Contains(blackMans[Grid.GetRow(blackEllipse) + 1, Grid.GetColumn(blackEllipse) - 1]))
+        {
+            canMove = true;
+        }
+
+        IfCanMoveBlackKing(blackEllipse);
+    }
+    
+    //Check if King can move
+    private static void IfCanMoveBlackKing(Ellipse blackEllipse)
+    {
+        if (blackMans[Grid.GetRow(blackEllipse), Grid.GetColumn(blackEllipse)].Fill == Brushes.Blue &&
+            Grid.GetColumn(blackEllipse) > 0 && Grid.GetRow(blackEllipse) > 0 &&
+            !whiteEllipses.Contains(whiteMans[Grid.GetRow(blackEllipse) - 1, Grid.GetColumn(blackEllipse) - 1]) &&
+            !blackEllipses.Contains(blackMans[Grid.GetRow(blackEllipse) - 1, Grid.GetColumn(blackEllipse) - 1]))
+        {
+            canMove = true;
+        }
+
+        if (blackMans[Grid.GetRow(blackEllipse), Grid.GetColumn(blackEllipse)].Fill == Brushes.Blue &&
+            Grid.GetColumn(blackEllipse) < maxSizeOfField - 1 && Grid.GetRow(blackEllipse) > 0 &&
+            !whiteEllipses.Contains(whiteMans[Grid.GetRow(blackEllipse) - 1, Grid.GetColumn(blackEllipse) + 1]) &&
+            !blackEllipses.Contains(blackMans[Grid.GetRow(blackEllipse) - 1, Grid.GetColumn(blackEllipse) + 1]))
+        {
+            canMove = true;
         }
     }
 

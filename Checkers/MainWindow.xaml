@@ -7,7 +7,7 @@
 
     <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
         <Border HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="Black" BorderThickness="2">
-            <Grid  Name="MyGrid">
+            <Grid Name="MyGrid">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="100" />
                     <ColumnDefinition Width="100" />
@@ -30,14 +30,17 @@
                     <RowDefinition Height="100" />
                     <RowDefinition Height="100" />
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="4" Grid.Column="8" Name="BlackWon" TextWrapping="Wrap" Visibility="Collapsed"
+                <TextBlock Grid.Row="3" Grid.Column="8" Name="BlackWon" TextWrapping="Wrap" Visibility="Collapsed"
                            HorizontalAlignment="Center">
                     <Run FontSize="16">BLACK WON</Run>
                 </TextBlock>
-                <TextBlock Grid.Row="4" Grid.Column="8" Name="WhiteWon" TextWrapping="Wrap" Visibility="Collapsed"
+                <TextBlock Grid.Row="3" Grid.Column="8" Name="WhiteWon" TextWrapping="Wrap" Visibility="Collapsed"
                            HorizontalAlignment="Center">
                     <Run FontSize="16">WHITE WON</Run>
                 </TextBlock>
+                <Button Grid.Row="4" Grid.Column="8" Name="ResetButton" Click="Reset">
+                    <TextBlock TextWrapping="Wrap" HorizontalAlignment="Stretch">RESET</TextBlock>
+                </Button>
             </Grid>
         </Border>
     </Grid>

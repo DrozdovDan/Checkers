@@ -33,10 +33,12 @@ namespace Checkers
         public static bool becomeKing = false;
         public static Ellipse[,] whiteMans = new Ellipse[maxSizeOfField, maxSizeOfField];
         public static Ellipse[,] blackMans = new Ellipse[maxSizeOfField, maxSizeOfField];
+        public static bool canMove = false;
 
         public MainWindow()
         {
             InitializeComponent();
+
             //Set field
             for (int i = 0; i < maxSizeOfField; i++)
             {
@@ -103,6 +105,7 @@ namespace Checkers
         private void NewClick(object? sender, RoutedEventArgs e)
         {
             canBeat = false;
+            canMove = false;
 
             var thatButton = (Button)sender!;
 
@@ -112,13 +115,27 @@ namespace Checkers
             {
                 IfCanBeatWhite();
 
-                WhiteTurn(thatButton);
+                if (canMove)
+                {
+                    WhiteTurn(thatButton);
+                }
+                else
+                {
+                    BlackWon.Visibility = Visibility.Visible;
+                }
             }
             else
             {
                 IfCanBeatBlack();
 
-                BlackTurn(thatButton);
+                if (canMove)
+                {
+                    BlackTurn(thatButton);
+                }
+                else
+                {
+                    WhiteWon.Visibility = Visibility.Visible;
+                }
             }
 
             //Who won?
@@ -218,6 +235,86 @@ namespace Checkers
                 field[Grid.GetRow(lastTriggeredButton) - 2, Grid.GetColumn(lastTriggeredButton) + 2].Background =
                     Brushes.Chocolate;
             }
+        }
+
+        public void Reset(object? sender, RoutedEventArgs e)
+        {
+            InitializeComponent();
+
+            countOfBeatenMen = 0;
+            canBeat = false;
+            becomeKing = false;
+            isTriggered = false;
+            manToBeat1 = null;
+            manToBeat2 = null;
+            manToBeat3 = null;
+            manToBeat4 = null;
+            whiteTurn = false;
+            lastTriggeredButton = null;
+            canMove = false;
+
+            //Set field
+            field = new Button[maxSizeOfField, maxSizeOfField];
+            for (int i = 0; i < maxSizeOfField; i++)
+            {
+                for (int j = 0; j < maxSizeOfField; j++)
+                {
+                    if ((i + j) % 2 == 0)
+                    {
+                        field[i, j] = new Button();
+                        Border border = new Border();
+                        Grid.SetColumn(border, j);
+                        Grid.SetRow(border, i);
+                        border.Background = Brushes.AntiqueWhite;
+                        MyGrid.Children.Add(border);
+                    }
+                    else
+                    {
+                        Button button = new Button();
+                        Grid.SetColumn(button, j);
+                        Grid.SetRow(button, i);
+                        button.Background = Brushes.Chocolate;
+                        button.Click += NewClick;
+                        MyGrid.Children.Add(button);
+                        field[i, j] = button;
+                    }
+                }
+            }
+
+            //Set Men
+            whiteEllipses = new List<Ellipse>();
+            blackEllipses = new List<Ellipse>();
+            for (int i = 0; i < maxSizeOfField; i++)
+            {
+                for (int j = 0; j < maxSizeOfField; j++)
+                {
+                    if ((i + j) % 2 != 0)
+                    {
+                        Ellipse ellipse = new Ellipse();
+                        Grid.SetColumn(ellipse, j);
+                        Grid.SetRow(ellipse, i);
+                        ellipse.Width = 90;
+                        ellipse.Height = 90;
+                        ellipse.IsHitTestVisible = false;
+                        if (i < numberOfRowsForMen)
+                        {
+                            ellipse.Fill = Brushes.Black;
+                            blackEllipses.Add(ellipse);
+                            MyGrid.Children.Add(ellipse);
+                        }
+
+                        if (i >= maxSizeOfField - numberOfRowsForMen)
+                        {
+                            ellipse.Fill = Brushes.White;
+                            whiteEllipses.Add(ellipse);
+                            MyGrid.Children.Add(ellipse);
+                        }
+                    }
+                }
+            }
+
+            BlackWon.Visibility = Visibility.Collapsed;
+            WhiteWon.Visibility = Visibility.Collapsed;
         }
     }
 }

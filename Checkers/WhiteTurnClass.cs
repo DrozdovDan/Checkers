@@ -62,6 +62,8 @@ public static class WhiteTurnClass
                 canBeat = true;
             }
 
+            IfCanMoveWhite(whiteEllipse);
+            
             IfCanBeatWhiteKing(whiteEllipse);
         }
     }
@@ -88,6 +90,44 @@ public static class WhiteTurnClass
         }
     }
 
+    private static void IfCanMoveWhite(Ellipse whiteEllipse)
+    {
+        if (Grid.GetColumn(whiteEllipse) < maxSizeOfField - 1 && Grid.GetRow(whiteEllipse) > 0 &&
+            !whiteEllipses.Contains(whiteMans[Grid.GetRow(whiteEllipse) - 1, Grid.GetColumn(whiteEllipse) + 1]) &&
+            !blackEllipses.Contains(blackMans[Grid.GetRow(whiteEllipse) - 1, Grid.GetColumn(whiteEllipse) + 1]))
+        {
+            canMove = true;
+        }
+
+        if (Grid.GetColumn(whiteEllipse) > 0 && Grid.GetRow(whiteEllipse) > 0 &&
+            !whiteEllipses.Contains(whiteMans[Grid.GetRow(whiteEllipse) - 1, Grid.GetColumn(whiteEllipse) - 1]) &&
+            !blackEllipses.Contains(blackMans[Grid.GetRow(whiteEllipse) - 1, Grid.GetColumn(whiteEllipse) - 1]))
+        {
+            canMove = true;
+        }
+        
+        IfCanMoveWhiteKing(whiteEllipse);
+    }
+    
+    //Check if King can move something
+    private static void IfCanMoveWhiteKing(Ellipse whiteEllipse)
+    {
+        if (whiteMans[Grid.GetRow(whiteEllipse), Grid.GetColumn(whiteEllipse)].Fill == Brushes.Red &&
+            Grid.GetColumn(whiteEllipse) > 0 && Grid.GetRow(whiteEllipse) < maxSizeOfField - 1 &&
+            !whiteEllipses.Contains(whiteMans[Grid.GetRow(whiteEllipse) + 1, Grid.GetColumn(whiteEllipse) - 1]) &&
+            !blackEllipses.Contains(blackMans[Grid.GetRow(whiteEllipse) + 1, Grid.GetColumn(whiteEllipse) - 1]))
+        {
+            canMove = true;
+        }
+
+        if (whiteMans[Grid.GetRow(whiteEllipse), Grid.GetColumn(whiteEllipse)].Fill == Brushes.Red &&
+            Grid.GetColumn(whiteEllipse) < maxSizeOfField - 1 && Grid.GetRow(whiteEllipse) < maxSizeOfField - 1 &&
+            !whiteEllipses.Contains(whiteMans[Grid.GetRow(whiteEllipse) + 1, Grid.GetColumn(whiteEllipse) + 1]) &&
+            !blackEllipses.Contains(blackMans[Grid.GetRow(whiteEllipse) + 1, Grid.GetColumn(whiteEllipse) + 1]))
+        {
+            canMove = true;
+        }
+    }
     private static void TriggerButton(Button thatButton)
     {
         lastTriggeredButton = thatButton;
@@ -346,7 +386,7 @@ public static class WhiteTurnClass
             }
 
             countOfBeatenMen += 1;
-            
+
             //Check if it becomes king
             if (!becomeKing)
             {
