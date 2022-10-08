@@ -2,10 +2,10 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:Checkers"
-        Title="Checkers" WindowStyle="ThreeDBorderWindow" MinWidth="800" MinHeight="800" Width="800" Height="800"
+        Title="Checkers" WindowStyle="ThreeDBorderWindow" MinWidth="1100" MinHeight="850" Width="800" Height="800"
         WindowStartupLocation="CenterScreen">
 
-    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" MinHeight="800" MinWidth="1100">
         <Border HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="Black" BorderThickness="2">
             <Grid Name="MyGrid">
                 <Grid.ColumnDefinitions>
