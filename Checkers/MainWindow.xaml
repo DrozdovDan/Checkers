@@ -7,7 +7,7 @@
 
     <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
         <Border HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="Black" BorderThickness="2">
-            <Grid>
+            <Grid  Name="MyGrid">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="100" />
                     <ColumnDefinition Width="100" />
@@ -29,145 +29,7 @@
                     <RowDefinition Height="100" />
                     <RowDefinition Height="100" />
                     <RowDefinition Height="100" />
-                    <RowDefinition Height="100" />
                 </Grid.RowDefinitions>
-                <Button Grid.Row="0" Grid.Column="1" Name="Button1" Background="Maroon" Click="NewClick"></Button>
-                <Button Grid.Row="0" Grid.Column="3" Name="Button2" Background="Maroon" Click="NewClick"></Button>
-                <Button Grid.Row="0" Grid.Column="5" Name="Button3" Background="Maroon" Click="NewClick"></Button>
-                <Button Grid.Row="0" Grid.Column="7" Name="Button4" Background="Maroon" Click="NewClick"></Button>
-                <Button Grid.Row="1" Grid.Column="0" Name="Button5" Background="Maroon" Click="NewClick"></Button>
-                <Button Grid.Row="1" Grid.Column="2" Name="Button6" Background="Maroon" Click="NewClick"></Button>
-                <Button Grid.Row="1" Grid.Column="4" Name="Button7" Background="Maroon" Click="NewClick"></Button>
-                <Button Grid.Row="1" Grid.Column="6" Name="Button8" Background="Maroon" Click="NewClick"></Button>
-                <Button Grid.Row="2" Grid.Column="1" Name="Button9" Background="Maroon" Click="NewClick"></Button>
-                <Button Grid.Row="2" Grid.Column="3" Name="Button10" Background="Maroon" Click="NewClick"></Button>
-                <Button Grid.Row="2" Grid.Column="5" Name="Button11" Background="Maroon" Click="NewClick"></Button>
-                <Button Grid.Row="2" Grid.Column="7" Name="Button12" Background="Maroon" Click="NewClick"></Button>
-                <Button Grid.Row="3" Grid.Column="0" Name="Button13" Background="Maroon" Click="NewClick"></Button>
-                <Button Grid.Row="3" Grid.Column="2" Name="Button14" Background="Maroon" Click="NewClick"></Button>
-                <Button Grid.Row="3" Grid.Column="4" Name="Button15" Background="Maroon" Click="NewClick"></Button>
-                <Button Grid.Row="3" Grid.Column="6" Name="Button16" Background="Maroon" Click="NewClick"></Button>
-                <Button Grid.Row="4" Grid.Column="1" Name="Button17" Background="Maroon" Click="NewClick"></Button>
-                <Button Grid.Row="4" Grid.Column="3" Name="Button18" Background="Maroon" Click="NewClick"></Button>
-                <Button Grid.Row="4" Grid.Column="5" Name="Button19" Background="Maroon" Click="NewClick"></Button>
-                <Button Grid.Row="4" Grid.Column="7" Name="Button20" Background="Maroon" Click="NewClick"></Button>
-                <Button Grid.Row="5" Grid.Column="0" Name="Button21" Background="Maroon" Click="NewClick"></Button>
-                <Button Grid.Row="5" Grid.Column="2" Name="Button22" Background="Maroon" Click="NewClick"></Button>
-                <Button Grid.Row="5" Grid.Column="4" Name="Button23" Background="Maroon" Click="NewClick"></Button>
-                <Button Grid.Row="5" Grid.Column="6" Name="Button24" Background="Maroon" Click="NewClick"></Button>
-                <Button Grid.Row="6" Grid.Column="1" Name="Button25" Background="Maroon" Click="NewClick"></Button>
-                <Button Grid.Row="6" Grid.Column="3" Name="Button26" Background="Maroon" Click="NewClick"></Button>
-                <Button Grid.Row="6" Grid.Column="5" Name="Button27" Background="Maroon" Click="NewClick"></Button>
-                <Button Grid.Row="6" Grid.Column="7" Name="Button28" Background="Maroon" Click="NewClick"></Button>
-                <Button Grid.Row="7" Grid.Column="0" Name="Button29" Background="Maroon" Click="NewClick"></Button>
-                <Button Grid.Row="7" Grid.Column="2" Name="Button30" Background="Maroon" Click="NewClick"></Button>
-                <Button Grid.Row="7" Grid.Column="4" Name="Button31" Background="Maroon" Click="NewClick"></Button>
-                <Button Grid.Row="7" Grid.Column="6" Name="Button32" Background="Maroon" Click="NewClick"></Button>
-                <Border Grid.Row="0" Grid.Column="0" Background="AntiqueWhite"></Border>
-                <Border Grid.Row="0" Grid.Column="2" Background="AntiqueWhite"></Border>
-                <Border Grid.Row="0" Grid.Column="4" Background="AntiqueWhite"></Border>
-                <Border Grid.Row="0" Grid.Column="6" Background="AntiqueWhite"></Border>
-                <Border Grid.Row="1" Grid.Column="1" Background="AntiqueWhite"></Border>
-                <Border Grid.Row="1" Grid.Column="3" Background="AntiqueWhite"></Border>
-                <Border Grid.Row="1" Grid.Column="5" Background="AntiqueWhite"></Border>
-                <Border Grid.Row="1" Grid.Column="7" Background="AntiqueWhite"></Border>
-                <Border Grid.Row="2" Grid.Column="0" Background="AntiqueWhite"></Border>
-                <Border Grid.Row="2" Grid.Column="2" Background="AntiqueWhite"></Border>
-                <Border Grid.Row="2" Grid.Column="4" Background="AntiqueWhite"></Border>
-                <Border Grid.Row="2" Grid.Column="6" Background="AntiqueWhite"></Border>
-                <Border Grid.Row="3" Grid.Column="1" Background="AntiqueWhite"></Border>
-                <Border Grid.Row="3" Grid.Column="3" Background="AntiqueWhite"></Border>
-                <Border Grid.Row="3" Grid.Column="5" Background="AntiqueWhite"></Border>
-                <Border Grid.Row="3" Grid.Column="7" Background="AntiqueWhite"></Border>
-                <Border Grid.Row="4" Grid.Column="0" Background="AntiqueWhite"></Border>
-                <Border Grid.Row="4" Grid.Column="2" Background="AntiqueWhite"></Border>
-                <Border Grid.Row="4" Grid.Column="4" Background="AntiqueWhite"></Border>
-                <Border Grid.Row="4" Grid.Column="6" Background="AntiqueWhite"></Border>
-                <Border Grid.Row="5" Grid.Column="1" Background="AntiqueWhite"></Border>
-                <Border Grid.Row="5" Grid.Column="3" Background="AntiqueWhite"></Border>
-                <Border Grid.Row="5" Grid.Column="5" Background="AntiqueWhite"></Border>
-                <Border Grid.Row="5" Grid.Column="7" Background="AntiqueWhite"></Border>
-                <Border Grid.Row="6" Grid.Column="0" Background="AntiqueWhite"></Border>
-                <Border Grid.Row="6" Grid.Column="2" Background="AntiqueWhite"></Border>
-                <Border Grid.Row="6" Grid.Column="4" Background="AntiqueWhite"></Border>
-                <Border Grid.Row="6" Grid.Column="6" Background="AntiqueWhite"></Border>
-                <Border Grid.Row="7" Grid.Column="1" Background="AntiqueWhite"></Border>
-                <Border Grid.Row="7" Grid.Column="3" Background="AntiqueWhite"></Border>
-                <Border Grid.Row="7" Grid.Column="5" Background="AntiqueWhite"></Border>
-                <Border Grid.Row="7" Grid.Column="7" Background="AntiqueWhite"></Border>
-                <Ellipse Name="WhiteEllipse1" Grid.Row="7" Grid.Column="0" Width="90" Height="90" Fill="White"
-                         IsHitTestVisible="False">
-                    
-                </Ellipse>
-                <Ellipse Name="WhiteEllipse2" Grid.Row="7" Grid.Column="2" Width="90" Height="90" Fill="White"
-                         IsHitTestVisible="False">
-                </Ellipse>
-                <Ellipse Name="WhiteEllipse3" Grid.Row="7" Grid.Column="4" Width="90" Height="90" Fill="White"
-                         IsHitTestVisible="False">
-                </Ellipse>
-                <Ellipse Name="WhiteEllipse4" Grid.Row="7" Grid.Column="6" Width="90" Height="90" Fill="White"
-                         IsHitTestVisible="False">
-                </Ellipse>
-                <Ellipse Name="WhiteEllipse5" Grid.Row="6" Grid.Column="1" Width="90" Height="90" Fill="White"
-                         IsHitTestVisible="False">
-                </Ellipse>
-                <Ellipse Name="WhiteEllipse6" Grid.Row="6" Grid.Column="3" Width="90" Height="90" Fill="White"
-                         IsHitTestVisible="False">
-                </Ellipse>
-                <Ellipse Name="WhiteEllipse7" Grid.Row="6" Grid.Column="5" Width="90" Height="90" Fill="White"
-                         IsHitTestVisible="False">
-                </Ellipse>
-                <Ellipse Name="WhiteEllipse8" Grid.Row="6" Grid.Column="7" Width="90" Height="90" Fill="White"
-                         IsHitTestVisible="False">
-                </Ellipse>
-                <Ellipse Name="WhiteEllipse9" Grid.Row="5" Grid.Column="0" Width="90" Height="90" Fill="White"
-                         IsHitTestVisible="False">
-                </Ellipse>
-                <Ellipse Name="WhiteEllipse10" Grid.Row="5" Grid.Column="2" Width="90" Height="90" Fill="White"
-                         IsHitTestVisible="False">
-                </Ellipse>
-                <Ellipse Name="WhiteEllipse11" Grid.Row="5" Grid.Column="4" Width="90" Height="90" Fill="White"
-                         IsHitTestVisible="False">
-                </Ellipse>
-                <Ellipse Name="WhiteEllipse12" Grid.Row="5" Grid.Column="6" Width="90" Height="90" Fill="White"
-                         IsHitTestVisible="False">
-                </Ellipse>
-                <Ellipse Name="BlackEllipse1" Grid.Row="0" Grid.Column="1" Width="90" Height="90" Fill="Black"
-                         IsHitTestVisible="False">
-                </Ellipse>
-                <Ellipse Name="BlackEllipse2" Grid.Row="0" Grid.Column="3" Width="90" Height="90" Fill="Black"
-                         IsHitTestVisible="False">
-                </Ellipse>
-                <Ellipse Name="BlackEllipse3" Grid.Row="0" Grid.Column="5" Width="90" Height="90" Fill="Black"
-                         IsHitTestVisible="False">
-                </Ellipse>
-                <Ellipse Name="BlackEllipse4" Grid.Row="0" Grid.Column="7" Width="90" Height="90" Fill="Black"
-                         IsHitTestVisible="False">
-                </Ellipse>
-                <Ellipse Name="BlackEllipse5" Grid.Row="1" Grid.Column="0" Width="90" Height="90" Fill="Black"
-                         IsHitTestVisible="False">
-                </Ellipse>
-                <Ellipse Name="BlackEllipse6" Grid.Row="1" Grid.Column="2" Width="90" Height="90" Fill="Black"
-                         IsHitTestVisible="False">
-                </Ellipse>
-                <Ellipse Name="BlackEllipse7" Grid.Row="1" Grid.Column="4" Width="90" Height="90" Fill="Black"
-                         IsHitTestVisible="False">
-                </Ellipse>
-                <Ellipse Name="BlackEllipse8" Grid.Row="1" Grid.Column="6" Width="90" Height="90" Fill="Black"
-                         IsHitTestVisible="False">
-                </Ellipse>
-                <Ellipse Name="BlackEllipse9" Grid.Row="2" Grid.Column="1" Width="90" Height="90" Fill="Black"
-                         IsHitTestVisible="False">
-                </Ellipse>
-                <Ellipse Name="BlackEllipse10" Grid.Row="2" Grid.Column="3" Width="90" Height="90" Fill="Black"
-                         IsHitTestVisible="False">
-                </Ellipse>
-                <Ellipse Name="BlackEllipse11" Grid.Row="2" Grid.Column="5" Width="90" Height="90" Fill="Black"
-                         IsHitTestVisible="False">
-                </Ellipse>
-                <Ellipse Name="BlackEllipse12" Grid.Row="2" Grid.Column="7" Width="90" Height="90" Fill="Black"
-                         IsHitTestVisible="False">
-                </Ellipse>
                 <TextBlock Grid.Row="4" Grid.Column="8" Name="BlackWon" TextWrapping="Wrap" Visibility="Collapsed"
                            HorizontalAlignment="Center">
                     <Run FontSize="16">BLACK WON</Run>

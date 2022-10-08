@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -22,88 +23,76 @@ namespace Checkers
     /// </summary>
     public partial class MainWindow : Window
     {
+        public const int maxSizeOfField = 8;
+        private const int numberOfRowsForMen = 3;
         public static List<Ellipse> whiteEllipses = new List<Ellipse>();
         public static List<Ellipse> blackEllipses = new List<Ellipse>();
-        public static Button[,] field = new Button[8, 8];
+        public static Button[,] field = new Button[maxSizeOfField, maxSizeOfField];
         public static int countOfBeatenMen = 0;
         public static bool canBeat = false;
         public static bool becomeKing = false;
+        public static Ellipse[,] whiteMans = new Ellipse[maxSizeOfField, maxSizeOfField];
+        public static Ellipse[,] blackMans = new Ellipse[maxSizeOfField, maxSizeOfField];
 
         public MainWindow()
         {
             InitializeComponent();
-            //Set a list of white men
-            whiteEllipses.Add(WhiteEllipse1);
-            whiteEllipses.Add(WhiteEllipse2);
-            whiteEllipses.Add(WhiteEllipse3);
-            whiteEllipses.Add(WhiteEllipse4);
-            whiteEllipses.Add(WhiteEllipse5);
-            whiteEllipses.Add(WhiteEllipse6);
-            whiteEllipses.Add(WhiteEllipse7);
-            whiteEllipses.Add(WhiteEllipse8);
-            whiteEllipses.Add(WhiteEllipse9);
-            whiteEllipses.Add(WhiteEllipse10);
-            whiteEllipses.Add(WhiteEllipse11);
-            whiteEllipses.Add(WhiteEllipse12);
-            //Set a list of black men
-            blackEllipses.Add(BlackEllipse1);
-            blackEllipses.Add(BlackEllipse2);
-            blackEllipses.Add(BlackEllipse3);
-            blackEllipses.Add(BlackEllipse4);
-            blackEllipses.Add(BlackEllipse5);
-            blackEllipses.Add(BlackEllipse6);
-            blackEllipses.Add(BlackEllipse7);
-            blackEllipses.Add(BlackEllipse8);
-            blackEllipses.Add(BlackEllipse9);
-            blackEllipses.Add(BlackEllipse10);
-            blackEllipses.Add(BlackEllipse11);
-            blackEllipses.Add(BlackEllipse12);
-
-            //Set empty buttons to white squares
-            for (int i = 0; i < 8; i++)
+            //Set field
+            for (int i = 0; i < maxSizeOfField; i++)
             {
-                for (int j = 0; j < 8; j++)
+                for (int j = 0; j < maxSizeOfField; j++)
                 {
                     if ((i + j) % 2 == 0)
                     {
                         field[i, j] = new Button();
+                        Border border = new Border();
+                        Grid.SetColumn(border, j);
+                        Grid.SetRow(border, i);
+                        border.Background = Brushes.AntiqueWhite;
+                        MyGrid.Children.Add(border);
+                    }
+                    else
+                    {
+                        Button button = new Button();
+                        Grid.SetColumn(button, j);
+                        Grid.SetRow(button, i);
+                        button.Background = Brushes.Chocolate;
+                        button.Click += NewClick;
+                        MyGrid.Children.Add(button);
+                        field[i, j] = button;
                     }
                 }
             }
 
-            //Set an array of buttons
-            field[0, 1] = Button1;
-            field[0, 3] = Button2;
-            field[0, 5] = Button3;
-            field[0, 7] = Button4;
-            field[1, 0] = Button5;
-            field[1, 2] = Button6;
-            field[1, 4] = Button7;
-            field[1, 6] = Button8;
-            field[2, 1] = Button9;
-            field[2, 3] = Button10;
-            field[2, 5] = Button11;
-            field[2, 7] = Button12;
-            field[3, 0] = Button13;
-            field[3, 2] = Button14;
-            field[3, 4] = Button15;
-            field[3, 6] = Button16;
-            field[4, 1] = Button17;
-            field[4, 3] = Button18;
-            field[4, 5] = Button19;
-            field[4, 7] = Button20;
-            field[5, 0] = Button21;
-            field[5, 2] = Button22;
-            field[5, 4] = Button23;
-            field[5, 6] = Button24;
-            field[6, 1] = Button25;
-            field[6, 3] = Button26;
-            field[6, 5] = Button27;
-            field[6, 7] = Button28;
-            field[7, 0] = Button29;
-            field[7, 2] = Button30;
-            field[7, 4] = Button31;
-            field[7, 6] = Button32;
+            //Set Men
+            for (int i = 0; i < maxSizeOfField; i++)
+            {
+                for (int j = 0; j < maxSizeOfField; j++)
+                {
+                    if ((i + j) % 2 != 0)
+                    {
+                        Ellipse ellipse = new Ellipse();
+                        Grid.SetColumn(ellipse, j);
+                        Grid.SetRow(ellipse, i);
+                        ellipse.Width = 90;
+                        ellipse.Height = 90;
+                        ellipse.IsHitTestVisible = false;
+                        if (i < numberOfRowsForMen)
+                        {
+                            ellipse.Fill = Brushes.Black;
+                            blackEllipses.Add(ellipse);
+                            MyGrid.Children.Add(ellipse);
+                        }
+
+                        if (i >= maxSizeOfField - numberOfRowsForMen)
+                        {
+                            ellipse.Fill = Brushes.White;
+                            whiteEllipses.Add(ellipse);
+                            MyGrid.Children.Add(ellipse);
+                        }
+                    }
+                }
+            }
         }
 
         public static bool isTriggered = false;
@@ -117,151 +106,17 @@ namespace Checkers
 
             var thatButton = (Button)sender!;
 
-            Ellipse[,] whiteMans = new Ellipse[9, 9];
-            //Set empty ellipses to squares that does not have men
-            for (int i = 0; i < 8; i++)
-            {
-                for (int j = 0; j < 8; j++)
-                {
-                    whiteMans[i, j] = new Ellipse();
-                }
-            }
-
-            //Set an array of white men
-            foreach (var ellipse in whiteEllipses)
-            {
-                whiteMans[Grid.GetRow(ellipse), Grid.GetColumn(ellipse)] = ellipse;
-            }
-
-            Ellipse[,] blackMans = new Ellipse[9, 9];
-            //Set empty ellipses to squares that does not have men
-            for (int i = 0; i < 8; i++)
-            {
-                for (int j = 0; j < 8; j++)
-                {
-                    blackMans[i, j] = new Ellipse();
-                }
-            }
-
-            //Set an array of black men
-            foreach (var ellipse in blackEllipses)
-            {
-                blackMans[Grid.GetRow(ellipse), Grid.GetColumn(ellipse)] = ellipse;
-            }
+            SetField();
 
             if (whiteTurn)
             {
-                //Check if we can beat something
-                foreach (var whiteEllipse in whiteEllipses)
-                {
-                    if (Grid.GetColumn(whiteEllipse) < 6 && Grid.GetRow(whiteEllipse) > 1 &&
-                        blackEllipses.Contains(blackMans[Grid.GetRow(whiteEllipse) - 1,
-                            Grid.GetColumn(whiteEllipse) + 1]) &&
-                        !whiteEllipses.Contains(whiteMans[Grid.GetRow(whiteEllipse) - 2,
-                            Grid.GetColumn(whiteEllipse) + 2]) &&
-                        !blackEllipses.Contains(blackMans[Grid.GetRow(whiteEllipse) - 2,
-                            Grid.GetColumn(whiteEllipse) + 2]))
-                    {
-                        canBeat = true;
-                        break;
-                    }
-
-                    if (Grid.GetColumn(whiteEllipse) > 1 && Grid.GetRow(whiteEllipse) > 1 &&
-                        blackEllipses.Contains(blackMans[Grid.GetRow(whiteEllipse) - 1,
-                            Grid.GetColumn(whiteEllipse) - 1]) &&
-                        !whiteEllipses.Contains(whiteMans[Grid.GetRow(whiteEllipse) - 2,
-                            Grid.GetColumn(whiteEllipse) - 2]) &&
-                        !blackEllipses.Contains(blackMans[Grid.GetRow(whiteEllipse) - 2,
-                            Grid.GetColumn(whiteEllipse) - 2]))
-                    {
-                        canBeat = true;
-                        break;
-                    }
-
-                    if (whiteMans[Grid.GetRow(whiteEllipse), Grid.GetColumn(whiteEllipse)].Fill == Brushes.Red &&
-                        Grid.GetColumn(whiteEllipse) > 1 && Grid.GetRow(whiteEllipse) < 6 &&
-                        blackEllipses.Contains(blackMans[Grid.GetRow(whiteEllipse) + 1,
-                            Grid.GetColumn(whiteEllipse) - 1]) &&
-                        !whiteEllipses.Contains(whiteMans[Grid.GetRow(whiteEllipse) + 2,
-                            Grid.GetColumn(whiteEllipse) - 2]) &&
-                        !blackEllipses.Contains(blackMans[Grid.GetRow(whiteEllipse) + 2,
-                            Grid.GetColumn(whiteEllipse) - 2]))
-                    {
-                        canBeat = true;
-                        break;
-                    }
-
-                    if (whiteMans[Grid.GetRow(whiteEllipse), Grid.GetColumn(whiteEllipse)].Fill == Brushes.Red &&
-                        Grid.GetColumn(whiteEllipse) < 6 && Grid.GetRow(whiteEllipse) < 6 &&
-                        blackEllipses.Contains(blackMans[Grid.GetRow(whiteEllipse) + 1,
-                            Grid.GetColumn(whiteEllipse) + 1]) &&
-                        !whiteEllipses.Contains(whiteMans[Grid.GetRow(whiteEllipse) + 2,
-                            Grid.GetColumn(whiteEllipse) + 2]) &&
-                        !blackEllipses.Contains(blackMans[Grid.GetRow(whiteEllipse) + 2,
-                            Grid.GetColumn(whiteEllipse) + 2]))
-                    {
-                        canBeat = true;
-                        break;
-                    }
-                }
+                IfCanBeatWhite();
 
                 WhiteTurn(thatButton);
             }
             else
             {
-                //Check if we can beat something
-                foreach (var blackEllipse in blackEllipses)
-                {
-                    if (Grid.GetColumn(blackEllipse) < 6 && Grid.GetRow(blackEllipse) < 6 &&
-                        whiteEllipses.Contains(whiteMans[Grid.GetRow(blackEllipse) + 1,
-                            Grid.GetColumn(blackEllipse) + 1]) &&
-                        !whiteEllipses.Contains(whiteMans[Grid.GetRow(blackEllipse) + 2,
-                            Grid.GetColumn(blackEllipse) + 2]) &&
-                        !blackEllipses.Contains(blackMans[Grid.GetRow(blackEllipse) + 2,
-                            Grid.GetColumn(blackEllipse) + 2]))
-                    {
-                        canBeat = true;
-                        break;
-                    }
-
-                    if (Grid.GetColumn(blackEllipse) > 1 && Grid.GetRow(blackEllipse) < 6 &&
-                        whiteEllipses.Contains(whiteMans[Grid.GetRow(blackEllipse) + 1,
-                            Grid.GetColumn(blackEllipse) - 1]) &&
-                        !whiteEllipses.Contains(whiteMans[Grid.GetRow(blackEllipse) + 2,
-                            Grid.GetColumn(blackEllipse) - 2]) &&
-                        !blackEllipses.Contains(blackMans[Grid.GetRow(blackEllipse) + 2,
-                            Grid.GetColumn(blackEllipse) - 2]))
-                    {
-                        canBeat = true;
-                        break;
-                    }
-
-                    if (blackMans[Grid.GetRow(blackEllipse), Grid.GetColumn(blackEllipse)].Fill == Brushes.Blue &&
-                        Grid.GetColumn(blackEllipse) > 1 && Grid.GetRow(blackEllipse) > 1 &&
-                        whiteEllipses.Contains(whiteMans[Grid.GetRow(blackEllipse) - 1,
-                            Grid.GetColumn(blackEllipse) - 1]) &&
-                        !whiteEllipses.Contains(whiteMans[Grid.GetRow(blackEllipse) - 2,
-                            Grid.GetColumn(blackEllipse) - 2]) &&
-                        !blackEllipses.Contains(blackMans[Grid.GetRow(blackEllipse) - 2,
-                            Grid.GetColumn(blackEllipse) - 2]))
-                    {
-                        canBeat = true;
-                        break;
-                    }
-
-                    if (blackMans[Grid.GetRow(blackEllipse), Grid.GetColumn(blackEllipse)].Fill == Brushes.Blue &&
-                        Grid.GetColumn(blackEllipse) < 6 && Grid.GetRow(blackEllipse) > 1 &&
-                        whiteEllipses.Contains(whiteMans[Grid.GetRow(blackEllipse) - 1,
-                            Grid.GetColumn(blackEllipse) + 1]) &&
-                        !whiteEllipses.Contains(whiteMans[Grid.GetRow(blackEllipse) - 2,
-                            Grid.GetColumn(blackEllipse) + 2]) &&
-                        !blackEllipses.Contains(blackMans[Grid.GetRow(blackEllipse) - 2,
-                            Grid.GetColumn(blackEllipse) + 2]))
-                    {
-                        canBeat = true;
-                        break;
-                    }
-                }
+                IfCanBeatBlack();
 
                 BlackTurn(thatButton);
             }
@@ -275,6 +130,93 @@ namespace Checkers
             if (blackEllipses.Count == 0)
             {
                 WhiteWon.Visibility = Visibility.Visible;
+            }
+        }
+
+        public static void SetField()
+        {
+            //Set empty ellipses to squares that does not have men
+            for (int i = 0; i < maxSizeOfField; i++)
+            {
+                for (int j = 0; j < maxSizeOfField; j++)
+                {
+                    whiteMans[i, j] = new Ellipse();
+                }
+            }
+
+            //Set an array of white men
+            foreach (var ellipse in whiteEllipses)
+            {
+                whiteMans[Grid.GetRow(ellipse), Grid.GetColumn(ellipse)] = ellipse;
+            }
+
+            //Set empty ellipses to squares that does not have men
+            for (int i = 0; i < maxSizeOfField; i++)
+            {
+                for (int j = 0; j < maxSizeOfField; j++)
+                {
+                    blackMans[i, j] = new Ellipse();
+                }
+            }
+
+            //Set an array of black men
+            foreach (var ellipse in blackEllipses)
+            {
+                blackMans[Grid.GetRow(ellipse), Grid.GetColumn(ellipse)] = ellipse;
+            }
+        }
+
+        public static void SetColorBack()
+        {
+            lastTriggeredButton.Background = Brushes.Chocolate;
+            if (Grid.GetColumn(lastTriggeredButton) > 0 && Grid.GetRow(lastTriggeredButton) < maxSizeOfField - 1)
+            {
+                field[Grid.GetRow(lastTriggeredButton) + 1, Grid.GetColumn(lastTriggeredButton) - 1]
+                    .Background = Brushes.Chocolate;
+            }
+
+            if (Grid.GetColumn(lastTriggeredButton) < maxSizeOfField - 1 &&
+                Grid.GetRow(lastTriggeredButton) < maxSizeOfField - 1)
+            {
+                field[Grid.GetRow(lastTriggeredButton) + 1, Grid.GetColumn(lastTriggeredButton) + 1]
+                    .Background = Brushes.Chocolate;
+            }
+
+            if (Grid.GetColumn(lastTriggeredButton) > 0 && Grid.GetRow(lastTriggeredButton) > 0)
+            {
+                field[Grid.GetRow(lastTriggeredButton) - 1, Grid.GetColumn(lastTriggeredButton) - 1]
+                    .Background = Brushes.Chocolate;
+            }
+
+            if (Grid.GetColumn(lastTriggeredButton) < maxSizeOfField - 1 && Grid.GetRow(lastTriggeredButton) > 0)
+            {
+                field[Grid.GetRow(lastTriggeredButton) - 1, Grid.GetColumn(lastTriggeredButton) + 1]
+                    .Background = Brushes.Chocolate;
+            }
+
+            if (Grid.GetColumn(lastTriggeredButton) > 1 && Grid.GetRow(lastTriggeredButton) < maxSizeOfField - 2)
+            {
+                field[Grid.GetRow(lastTriggeredButton) + 2, Grid.GetColumn(lastTriggeredButton) - 2]
+                    .Background = Brushes.Chocolate;
+            }
+
+            if (Grid.GetColumn(lastTriggeredButton) < maxSizeOfField - 2 &&
+                Grid.GetRow(lastTriggeredButton) < maxSizeOfField - 2)
+            {
+                field[Grid.GetRow(lastTriggeredButton) + 2, Grid.GetColumn(lastTriggeredButton) + 2]
+                    .Background = Brushes.Chocolate;
+            }
+
+            if (Grid.GetColumn(lastTriggeredButton) > 1 && Grid.GetRow(lastTriggeredButton) > 1)
+            {
+                field[Grid.GetRow(lastTriggeredButton) - 2, Grid.GetColumn(lastTriggeredButton) - 2]
+                    .Background = Brushes.Chocolate;
+            }
+
+            if (Grid.GetColumn(lastTriggeredButton) < maxSizeOfField - 2 && Grid.GetRow(lastTriggeredButton) > 1)
+            {
+                field[Grid.GetRow(lastTriggeredButton) - 2, Grid.GetColumn(lastTriggeredButton) + 2].Background =
+                    Brushes.Chocolate;
             }
         }
     }
