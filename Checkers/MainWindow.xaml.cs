@@ -186,6 +186,9 @@ namespace Checkers
             SetMen();
 
             Message.Text = "Black turn";
+
+            WB.Text = "Is inactive";
+            BB.Text = "Is inactive";
         }
 
         private void CreateField()
@@ -206,48 +209,52 @@ namespace Checkers
                         field[i, j] = button;
                     }
 
-                    //Add numbers
-                    if (j == 0)
-                    {
-                        TextBlock textBlock = new TextBlock();
-                        Grid.SetColumn(textBlock, j);
-                        Grid.SetRow(textBlock, i);
-                        textBlock.Text = (maxSizeOfField - i).ToString();
-                        textBlock.HorizontalAlignment = HorizontalAlignment.Left;
-                        textBlock.VerticalAlignment = VerticalAlignment.Top;
-                        if (i % 2 != 0)
-                        {
-                            textBlock.Foreground = Brushes.AntiqueWhite;
-                        }
-                        else
-                        {
-                            textBlock.Foreground = Brushes.Chocolate;
-                        }
-
-                        textBlock.IsHitTestVisible = false;
-                        MyGrid.Children.Add(textBlock);
-                    }
-                    if (i == maxSizeOfField - 1)
-                    {
-                        TextBlock textBlock = new TextBlock();
-                        Grid.SetColumn(textBlock, j);
-                        Grid.SetRow(textBlock, i);
-                        textBlock.Text = ((char)(j + 65)).ToString();
-                        textBlock.HorizontalAlignment = HorizontalAlignment.Right;
-                        textBlock.VerticalAlignment = VerticalAlignment.Bottom;
-                        if (j % 2 == 0)
-                        {
-                            textBlock.Foreground = Brushes.AntiqueWhite;
-                        }
-                        else
-                        {
-                            textBlock.Foreground = Brushes.Chocolate;
-                        }
-
-                        textBlock.IsHitTestVisible = false;
-                        MyGrid.Children.Add(textBlock);
-                    }
+                    AddNumbers(i, j);
                 }
+            }
+        }
+
+        private void AddNumbers(int i, int j)
+        {
+            if (j == 0)
+            {
+                TextBlock textBlock = new TextBlock();
+                Grid.SetColumn(textBlock, j);
+                Grid.SetRow(textBlock, i);
+                textBlock.Text = (maxSizeOfField - i).ToString();
+                textBlock.HorizontalAlignment = HorizontalAlignment.Left;
+                textBlock.VerticalAlignment = VerticalAlignment.Top;
+                if (i % 2 != 0)
+                {
+                    textBlock.Foreground = Brushes.AntiqueWhite;
+                }
+                else
+                {
+                    textBlock.Foreground = Brushes.Chocolate;
+                }
+
+                textBlock.IsHitTestVisible = false;
+                MyGrid.Children.Add(textBlock);
+            }
+            if (i == maxSizeOfField - 1)
+            {
+                TextBlock textBlock = new TextBlock();
+                Grid.SetColumn(textBlock, j);
+                Grid.SetRow(textBlock, i);
+                textBlock.Text = ((char)(j + 65)).ToString();
+                textBlock.HorizontalAlignment = HorizontalAlignment.Right;
+                textBlock.VerticalAlignment = VerticalAlignment.Bottom;
+                if (j % 2 == 0)
+                {
+                    textBlock.Foreground = Brushes.AntiqueWhite;
+                }
+                else
+                {
+                    textBlock.Foreground = Brushes.Chocolate;
+                }
+
+                textBlock.IsHitTestVisible = false;
+                MyGrid.Children.Add(textBlock);
             }
         }
 
